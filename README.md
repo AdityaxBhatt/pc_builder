@@ -4,7 +4,7 @@
 
 ## 🚀 Features  
 - ✅ **Component Compatibility Checks** – Ensures selected components are fully compatible.  
-- 🔍 **Real-Time Price Comparison** – Fetches the latest prices from retailers like Amazon, Newegg, and Best Buy.  
+- 🔍 **Real-Time Price Comparison** – Fetches the latest prices from retailers like Amazon.  
 - 🔄 **Smart Suggestions** – Recommends compatible components based on your selections.  
 - 📏 **Form Factor Awareness** – Checks case and motherboard size compatibility.  
 - ⚡ **User-Friendly Interface** – Clean and intuitive design for effortless PC building.  
