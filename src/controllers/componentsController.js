@@ -94,7 +94,110 @@ const compatibleMotherboard = async (req,res) => {
 
 }
 
+const compatibleRAM = async (req,res) => {
+
+    try{
+        const {selectedComponent} = req.body;
+
+        let query = `SELECT * FROM components where 1=1 `;
+
+        if(selectedComponent&&selectedComponent.length!=0){
+
+            const cpu = selectedComponent.find(c => c.category === 'CPU');
+
+            if(cpu){
+
+                if(cpu.memory_type=='DDR3/DDR4'){
+                    query+=`AND memory_type IN ('DDR3','DDR4') `;
+                }
+                else if(cpu.memory_type=='DDR4/DDR5'){
+                    query+=`AND memory_type IN ('DDR4','DDR5') `;
+                }
+                else if(cpu.memory_type=='DDR3'){
+                    query+=`AND memory_type IN ('DDR3') `;
+                }
+                else if(cpu.memory_type=='DDR4'){
+                    query+=`AND memory_type IN ('DDR4') `;
+                }
+                else if(cpu.memory_type=='DDR5'){
+                    query+=`AND memory_type IN ('DDR5') `;
+                }
+
+            }
+
+            const motherboard = selectedComponent.find(c => c.category === 'Motherboard');
+
+            if(motherboard){
+
+                if(motherboard.memory_type=='DDR3/DDR4'){
+                    query+=`AND memory_type IN ('DDR3','DDR4') `;
+                }
+                else if(motherboard.memory_type=='DDR4/DDR5'){
+                    query+=`AND memory_type IN ('DDR4','DDR5') `;
+                }
+                else if(motherboard.memory_type=='DDR3'){
+                    query+=`AND memory_type IN ('DDR3') `;
+                }
+                else if(motherboard.memory_type=='DDR4'){
+                    query+=`AND memory_type IN ('DDR4') `;
+                }
+                else if(motherboard.memory_type=='DDR5'){
+                    query+=`AND memory_type IN ('DDR5') `;
+                }
+            }
+        }
+        query+=`AND category='RAM';`;
+
+
+        const result =  await pool.query(query);
+        res.json(result.rows);
+    }
+    catch(err){
+        res.status(500).json({error: 'could not fetch the parts'});
+        console.log(err);
+    }
+
+}
+const compatibleGPU = async (req,res) => {
+
+    try{
+        const {selectedComponent} = req.body;
+
+        let query = `SELECT * FROM components where 1=1 `;
+
+        if(selectedComponent&&selectedComponent.length!=0){
+
+            const pcCase = selectedComponent.find(c => c.category === 'Case');
+
+            if(pcCase){
+                if(pcCase.size=='Micro-ATX'){
+                    query+=`size IN ('E-ATX','ATX','Micro-ATX') `;
+                }
+                else if(pcCase.size=='ATX'){
+                    query+=`size IN ('E-ATX','ATX') `;
+                }
+                else if(pcCase.size=='ATX'){
+                    query+=`size IN ('E-ATX') `;
+                }
+
+            }
+
+            
+        }
+        query+=`AND category='Case';`;
+
+
+        const result =  await pool.query(query);
+        res.json(result.rows);
+    }
+    catch(err){
+        res.status(500).json({error: 'could not fetch the parts'});
+        console.log(err);
+    }
+
+}
+
 
 module.exports = {
-    getAllcomponent, compatibleCpu, compatibleMotherboard
+    getAllcomponent, compatibleCpu, compatibleMotherboard, compatibleRAM, compatibleGPU
 }
