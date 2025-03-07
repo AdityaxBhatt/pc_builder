@@ -197,7 +197,46 @@ const compatibleGPU = async (req,res) => {
 
 }
 
+const compatibleStorage = async (req,res) => {
+
+    try{
+        const {selectedComponent} = req.body;
+
+        let query = `SELECT * FROM components where 1=1 `;
+
+        query+=`AND category='Storage';`;
+
+        const result =  await pool.query(query);
+        res.json(result.rows);
+    }
+    catch(err){
+        res.status(500).json({error: 'could not fetch the parts'});
+        console.log(err);
+    }
+
+}
+
+const compatibleCooling = async (req,res) => {
+
+    try{
+        const {selectedComponent} = req.body;
+
+        let query = `SELECT * FROM components where 1=1 `;
+
+        query+=`AND category='Cooling';`;
+
+        const result =  await pool.query(query);
+        res.json(result.rows);
+    }
+    catch(err){
+        res.status(500).json({error: 'could not fetch the parts'});
+        console.log(err);
+    }
+
+}
+
+
 
 module.exports = {
-    getAllcomponent, compatibleCpu, compatibleMotherboard, compatibleRAM, compatibleGPU
+    getAllcomponent, compatibleCpu, compatibleMotherboard, compatibleRAM, compatibleGPU, compatibleStorage, compatibleCooling
 }
