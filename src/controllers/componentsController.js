@@ -235,6 +235,115 @@ const compatibleCooling = async (req,res) => {
 
 }
 
+const compatiblePSU = async (req,res) => {
+
+    try{
+        const {selectedComponent} = req.body;
+
+        let query = `SELECT * FROM components where 1=1 `;
+
+        let totalPowerConsumed=0;
+
+        const cpu = selectedComponent.find(c => c.category === 'CPU');
+    
+        if(cpu){
+            totalPowerConsumed+=cpu.wattage;
+        }
+
+        const gpu = selectedComponent.find(c => c.category === 'GPU');
+    
+        if(gpu){
+            totalPowerConsumed+=gpu.wattage;
+        }
+
+        const motherboard = selectedComponent.find(c => c.category === 'Motherboard');
+    
+        if(motherboard){
+            totalPowerConsumed+=motherboard.wattage;
+        }
+
+        const storage = selectedComponent.find(c => c.category === 'Storage');
+    
+        if(storage){
+            totalPowerConsumed+=storage.wattage;
+        }
+
+        const cooling = selectedComponent.find(c => c.category === 'Cooling');
+    
+        if(cooling){
+            totalPowerConsumed+=cooling.wattage;
+        }
+
+        totalPowerConsumed+=totalPowerConsumed*0.2;
+
+        query+=`AND wattage > ${totalPowerConsumed} `;
+
+
+
+        query+=`AND category='Cooling';`;
+
+        const result =  await pool.query(query);
+        res.json(result.rows);
+    }
+    catch(err){
+        res.status(500).json({error: 'could not fetch the parts'});
+        console.log(err);
+    }
+
+}
+
+const compatibleCase = async (req,res) => {
+
+    try{
+        const {selectedComponent} = req.body;
+
+        let query = `SELECT * FROM components where 1=1 `;
+
+        const motherboard = selectedComponent.find(c => c.category === 'Motherboard');
+
+        if(motherboard){
+            if(motherboard.size()=='Micro-ATX'){
+                query+=`AND size IN ('E-ATX','ATX','Micro-ATX') `;
+            }
+            else if(motherboard.size()=='ATX'){
+                query+=`AND size IN ('E-ATX','ATX') `;
+            }
+        }
+
+        const gpu = selectedComponent.find(c => c.category === 'GPU')
+
+        if(gpu){
+            if(gpu.size()=='Micro-ATX'){
+                query+=`AND size IN ('E-ATX','ATX','Micro-ATX') `;
+            }
+            else if(gpu.size()=='ATX'){
+                query+=`AND size IN ('E-ATX','ATX') `;
+            }
+        }
+
+        const cooling = selectedComponent.find(c => c.category === 'Cooling')
+
+        if(cooling){
+            if(cooling.size()=='Micro-ATX'){
+                query+=`AND size IN ('E-ATX','ATX','Micro-ATX') `;
+            }
+            else if(cooling.size()=='ATX'){
+                query+=`AND size IN ('E-ATX','ATX') `;
+            }
+        }
+
+        query+=`AND category='Case';`;
+
+        const result =  await pool.query(query);
+        res.json(result.rows);
+    }
+    catch(err){
+        res.status(500).json({error: 'could not fetch the parts'});
+        console.log(err);
+    }
+
+}
+
 
 
 module.exports = {
