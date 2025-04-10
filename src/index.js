@@ -5,7 +5,7 @@ const pool = require("./configs/db.js");
 const componentsRoutes = require('./routes/componentsRoutes.js');
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: 'https://pcfit.in' }));
 app.use(express.json());
 app.use('/api/components',componentsRoutes);
 
