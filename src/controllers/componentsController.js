@@ -184,7 +184,7 @@ const compatibleGPU = async (req,res) => {
 
             
         }
-        query+=`AND category='Case';`;
+        query+=`AND category='GPU';`;
 
 
         const result =  await pool.query(query);
@@ -347,5 +347,5 @@ const compatibleCase = async (req,res) => {
 
 
 module.exports = {
-    getAllcomponent, compatibleCpu, compatibleMotherboard, compatibleRAM, compatibleGPU, compatibleStorage, compatibleCooling
+    getAllcomponent, compatibleCpu, compatibleMotherboard, compatibleRAM, compatibleGPU, compatibleStorage, compatibleCooling, compatiblePSU, compatibleCase
 }
